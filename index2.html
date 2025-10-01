@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Engen se acerca</title>
+    
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Arial Black', sans-serif;
+            padding-top: 50px;
+            background-color: #4B0082; 
+            color: #E0E0E0;
+        }
+
+        h1 {
+            color: #FFD700; 
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+        }
+
+        #gif-container {
+            margin-bottom: 20px;
+        }
+
+        #iniciar-musica {
+            display: inline-block;
+            background-color: #8B0000; 
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 40px;
+            border-radius: 5px;
+            cursor: pointer; 
+            box-shadow: 0 4px #550000; 
+            transition: all 0.1s ease;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        #iniciar-musica:active {
+            box-shadow: 0 2px #550000;
+            transform: translateY(2px);
+        }
+
+        #cuenta-regresiva {
+            font-size: 2.8em;
+            font-weight: bold;
+            display: inline-block;
+            padding: 25px 40px;
+            margin-top: 30px;
+            border: 4px solid #DAA520; 
+            border-radius: 15px;
+            color: #8B0000; 
+            background-color: #FFD700; 
+            min-width: 450px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        }
+
+        #cuenta-regresiva.finalizado {
+            background-color: #32CD32;
+            color: white;
+            border-color: #228B22;
+            box-shadow: 0 0 15px rgba(50, 205, 50, 0.7);
+        }
+    </style>
+</head>
+<body>
+    
+    <audio id="background-audio" loop>
+        <source src="firanjanger.mp3" type="audio/mp3">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <h1>El Engen llegara en...</h1>
+
+    <div id="gif-container">
+        <img 
+            src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjFlYzJ4bDh5bWdhbGVkYWE2ZDlra3p5OXkyYmtyb3d2bTRieHR3MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/o7mLSkGYCu9Pi/giphy.gif" 
+            alt="Esqueleto gracioso" 
+            style="max-width: 800px; height: auto; border-radius: 50%; border: 5px solid #FFD700;"
+        >
+    </div>
+    
+    <div id="iniciar-musica">
+        🔥 No presiones este boton 🔥
+    </div>
+
+    <p id="cuenta-regresiva">Cargando...</p>
+
+    <script>
+        const FECHA_FINAL = new Date("October 4, 2025 20:00:00").getTime();
+        
+        const audioElement = document.getElementById('background-audio');
+        const botonMusica = document.getElementById('iniciar-musica');
+
+        botonMusica.addEventListener('click', function() {
+            audioElement.play().catch(error => {
+            });
+            botonMusica.style.display = 'none'; 
+        });
+
+        function actualizarCuentaAtras() {
+            const ahora = new Date().getTime(); 
+            const distancia = FECHA_FINAL - ahora;
+            const elementoContador = document.getElementById("cuenta-regresiva");
+
+            if (distancia < 0) {
+                clearInterval(intervalo);
+
+                audioElement.pause();
+
+                elementoContador.innerHTML = "🎉 **El Engen ha llegado** 🎉";
+                elementoContador.classList.add('finalizado'); 
+                return;
+            }
+            
+            // Cálculos
+            const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+            elementoContador.innerHTML = 
+                `💀 ${dias} días ${horas} horas ${minutos} minutos ${segundos} segundos 💀`;
+        }
+
+        const intervalo = setInterval(actualizarCuentaAtras, 1000);
+        actualizarCuentaAtras(); 
+    </script>
+
+</body>
+</html>
